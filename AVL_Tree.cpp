@@ -98,6 +98,7 @@ Node *deleteNode(Node *x,int key){
             x->right = deleteNode(x->right,temp->key); // 因为temp移动到x，递归去掉temp节点
         }
     }
+    if(x == NULL) return x; //这一句不能漏掉，因为删除之后以x为根的子树已空
     // 更新高度
     x->height = max(height(x->left),height(x->right)) + 1;
     // 判断当前这个p的祖先节点x的平衡性
