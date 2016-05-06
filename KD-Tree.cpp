@@ -45,7 +45,9 @@ void build(int first,int last,point p[]){
 		if(maxx[i]-minx[i] > maxx[now]-minx[now]) now = i;
 	int mid = first+last>>1;
 	divX[mid] = now;
-	nth_element(p+first,p+mid,p+last,cmp);
+	// nth_element,取p+mid作为pivot,把比它小的放在其左边,
+	//比他大的放在其右边,并且不保证左右两边的相对顺序或者是否有序
+	nth_element(p+first,p+mid,p+last,cmp); 
 	if(first+1 == last) return;// 如果只有一个元素，不需要再向下递归
 	build(first,mid,p);
 	build(mid+1,last,p);
