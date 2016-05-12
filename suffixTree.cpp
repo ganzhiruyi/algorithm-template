@@ -160,12 +160,40 @@ public:
             delete u->end;
         delete u; 
     }
+    int traverseEdge(string &str,int idx,int start,int end){
+        // 比较从str[idx]开始是否匹配[start,end]边上的字符
+        // -1表示不匹配,1表示匹配,0表示str匹配[start,end]但是还没匹配完所有字符
+        int n = str.length();
+        for(int i = start;i <= end && idx < n;++i,++idx){
+            if(str[idx] != text[i]) return -1;
+        }
+        if(idx == n) return 1;
+        return 0;
+    }
+    bool isSuffixTreeSubstr(Node *u,string &str,int idx=0){
+        if(!u) return false;
+        int n = str.length();
+        if(u->start != -1){
+            // u不是根节点
+            int flag = traverseEdge(str,idx,u->start,*u->end);
+            if(flag != 0)
+                return flag == 1 ? true : false;
+            idx += edgeLength(u);
+        }
+        if(u->children[str[idx]])
+            return isSuffixTreeSubstr(u->children[str[idx]],str,idx);
+        else return false;
+    }
 };
 int main(){
-    string text = "abcabxabcd";
+    string text,subtext;
+    cin >> text;
     SuffixTree tree;
     SuffixTree::Node *rt = tree.build(text);
     tree.setSuffixIndexByDFS(rt);
+    while(cin >> subtext){
+        cout << (tree.isSuffixTreeSubstr(rt,subtext) ? "yes" : "no") << endl;
+    }
     tree.freeSuffixTreeByPostOrder(rt);
     return 0;
 }
